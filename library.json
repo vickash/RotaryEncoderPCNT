@@ -1,0 +1,19 @@
+{
+    "name": "RotaryEncoderPCNT",
+    "description": "ESP32 rotary encoder implementation, using pulse counter (PCNT) peripheral.",
+    "keywords": "rotary, encoder, esp32, input, iot",
+    "authors": {
+      "name": "vickash",
+      "url": "https://github.com/vickash/RotaryEncoderPCNT.git"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vickash/RotaryEncoderPCNT.git"
+    },
+    "version": "1.0",
+    "examples": "examples/*/*.ino",
+    "frameworks": "arduino",
+    "platforms": [
+        "espressif32",
+    ]
+}
