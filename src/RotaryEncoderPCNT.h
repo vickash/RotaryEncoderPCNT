@@ -8,25 +8,50 @@
 
 class RotaryEncoderPCNT {
   public:
-    RotaryEncoderPCNT(int a, int b, int start_pos, uint16_t glitch_ns);
-    RotaryEncoderPCNT(int a, int b, int start_pos);
-    RotaryEncoderPCNT(int a, int b);
-    ~RotaryEncoderPCNT();
+    RotaryEncoderPCNT(int a, int b, int start_pos, uint16_t glitch_ns){
+      glitch_time = glitch_ns;
+      offset = start_pos;
+      pin_a = a;
+      pin_b = b;
+      init();
+    }
+
+    RotaryEncoderPCNT(int a, int b, int start_pos){
+      offset = start_pos;
+      pin_a = a;
+      pin_b = b;
+      init();
+    }
+
+    RotaryEncoderPCNT(int a, int b){
+      pin_a = a;
+      pin_b = b;
+      init();
+    }
+
+    RotaryEncoderPCNT(){
+    }
+
+    ~RotaryEncoderPCNT(){
+      deinit();
+    }
+    
+    void init();
+    void deinit();
     int  position();
     void setPosition(int pos);
     void zero();
+    uint8_t  pin_a = 255;
+    uint8_t  pin_b = 255;
+    uint16_t glitch_time = GLITCH_NS_DEFAULT;
 
   private:
-    void install(int a, int b, int start_pos, uint16_t glitch_ns);
-
     pcnt_unit_handle_t unit;
     pcnt_channel_handle_t chan_a;
     pcnt_channel_handle_t chan_b;
-    uint8_t pin_a;
-    uint8_t pin_b;
-    int count = 0;
-    int offset = 0;
     int16_t low_limit = INT16_MIN;
     int16_t high_limit = INT16_MAX;
+    int count = 0;
+    int offset = START_POS_DEFAULT;
 };
 #endif

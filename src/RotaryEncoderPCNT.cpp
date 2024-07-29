@@ -1,22 +1,6 @@
 #include "RotaryEncoderPCNT.h"
 
-RotaryEncoderPCNT::RotaryEncoderPCNT(int a, int b, int start_pos, uint16_t glitch_ns){
-  install(a, b, start_pos, glitch_ns);
-}
-
-RotaryEncoderPCNT::RotaryEncoderPCNT(int a, int b, int start_pos){
-  install(a, b, start_pos, GLITCH_NS_DEFAULT);
-}
-
-RotaryEncoderPCNT::RotaryEncoderPCNT(int a, int b){
-  install(a, b, START_POS_DEFAULT, GLITCH_NS_DEFAULT);
-}
-
-void RotaryEncoderPCNT::install(int a, int b, int start_pos, uint16_t glitch_ns){
-  offset = start_pos;
-  pin_a = a;
-  pin_b = b;
-
+void RotaryEncoderPCNT::init(){
   // Unit config
   pcnt_unit_config_t unit_config = {
       .low_limit = low_limit,
@@ -33,7 +17,7 @@ void RotaryEncoderPCNT::install(int a, int b, int start_pos, uint16_t glitch_ns)
 
   // Glitch filter setup
   pcnt_glitch_filter_config_t filter_config = {
-      .max_glitch_ns = glitch_ns,
+      .max_glitch_ns = glitch_time,
   };
   ESP_ERROR_CHECK(pcnt_unit_set_glitch_filter(unit, &filter_config));
 
@@ -63,12 +47,12 @@ void RotaryEncoderPCNT::install(int a, int b, int start_pos, uint16_t glitch_ns)
   ESP_ERROR_CHECK(pcnt_unit_start(unit));
 }
 
-RotaryEncoderPCNT::~RotaryEncoderPCNT(){
-    // Free PCNT resources when destroyed.
-    pcnt_unit_disable(unit);
-    pcnt_del_channel(chan_a);
-    pcnt_del_channel(chan_b);
-    pcnt_del_unit(unit);
+void RotaryEncoderPCNT::deinit(){
+  // Free PCNT resources when destroyed.
+  pcnt_unit_disable(unit);
+  pcnt_del_channel(chan_a);
+  pcnt_del_channel(chan_b);
+  pcnt_del_unit(unit);
 }
 
 int RotaryEncoderPCNT::position(){

@@ -24,4 +24,4 @@ void loop(){
 
 Note: `.position()` returns a signed 32-bit integer. If you expect to overflow that, you need to handle it.
 
-See included example for more.
+See included examples for more.
